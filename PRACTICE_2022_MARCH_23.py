@@ -43,6 +43,9 @@ c.stick_or_no_stick('big ')
 
 g.stick_or_no_stick('big ')
 
+del c.stick
+
+c.stick_or_no_stick('big ')
 
 print('')
 
