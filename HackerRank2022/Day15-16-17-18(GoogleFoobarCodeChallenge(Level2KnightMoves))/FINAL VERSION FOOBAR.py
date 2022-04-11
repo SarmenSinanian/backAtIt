@@ -1,4 +1,9 @@
 from itertools import product
+from time import process_time
+
+t1_start = process_time()
+
+# for i in range(25):
 
 
 def knight_moves(position1, position2):
@@ -36,3 +41,13 @@ def solution(src, dest):
             if dest_cartesian in list_of_checked_new_moves:
                 break
     return move_count
+
+
+print(solution(0, 20))
+
+t1_stop = process_time()
+
+print("Elapsed time:", t1_stop, t1_start)
+
+print("Elapsed time during the whole program in seconds:",
+      t1_stop - t1_start)
