@@ -1,3 +1,6 @@
+def solution(src, dest):
+    #Your code here
+
 # foobar:~/dont-get-volunteered sarmensin$ cat constraints.txt
 # Java
 # ====
