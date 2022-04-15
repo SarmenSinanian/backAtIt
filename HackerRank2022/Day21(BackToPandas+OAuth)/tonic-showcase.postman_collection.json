@@ -1,0 +1,2101 @@
+{
+	"info": {
+		"_postman_id": "1351335d-f0f5-4c59-8bf5-fb611ced55f4",
+		"name": "tonic-showcase",
+		"description": "Some example requests you can use to test the API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3022537e-996f-4221-b2ee-36af6940702b",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"tonic_api_key\", jsonData.token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"<your-email>\",\n\t\"password\": \"<your-password>\"\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/auth",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "This request logs you in by sending your credentials and receiving the API Key.\nIf you successfully logged yourself in, replace the value of api-key header in the other requests with the token of the response."
+					},
+					"response": [
+						{
+							"name": "login - success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"<your-email>\",\n\t\"password\": \"<your-password>\"\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/auth",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "140"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:00:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d\"\n}"
+						},
+						{
+							"name": "login - not successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"demo@tonic.com\",\n\t\"password\": \"asdf\"\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/auth",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"auth"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:01:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"INVALID_LOGIN\",\n    \"message\": \"Username or Password not correct!\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Campaign",
+			"item": [
+				{
+					"name": "create ron campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}",
+								"description": "automatically set when calling login"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"DONUT-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"ron\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\"desktop\"],\n        \"os\": [\"windows\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a RON campaign, so there is no keyword or category targeting"
+					},
+					"response": [
+						{
+							"name": "create ron campaign",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"DONUT-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"ron\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\"desktop\"],\n        \"os\": [\"windows\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "523"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:43:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"DONUT-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"ron\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"os\": [\n            \"windows\"\n        ],\n        \"browsers\": [\n            \"firefox\",\n            \"safari\",\n            \"opera\",\n            \"internet_explorer\",\n            \"others\",\n            \"chrome\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-04 22:00:00\",\n        \"end_date\": \"2020-10-04 22:00:00\"\n    },\n    \"conv_value\": null,\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13b3934f45dd62587d2edd\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create keyword campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"bonbon\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"safari\"],\n        \"os\": [\"macintosh\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a keyword campaign, so there your campaign will be targeted by the list of keywords you provide"
+					},
+					"response": [
+						{
+							"name": "create mac only keyword campaign",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"bonbon\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"safari\"],\n        \"os\": [\"macintosh\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "513"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:48:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\n            \"sweets\",\n            \"sugar\",\n            \"bonbon\"\n        ],\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-04 22:00:00\",\n        \"end_date\": \"2020-10-04 22:00:00\"\n    },\n    \"conv_value\": null,\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13b49c4f45dd62587d2ee0\"\n}"
+						},
+						{
+							"name": "create keyword campaign",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"bonbon\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\n        \t\"firefox\",\n        \t\"internet_explorer\",\n        \t\"chrome\"\n        ],\n        \"os\": [\"windows\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "541"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:47:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\n            \"sweets\",\n            \"sugar\",\n            \"bonbon\"\n        ],\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"firefox\",\n            \"internet_explorer\",\n            \"chrome\"\n        ],\n        \"os\": [\n            \"windows\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-04 22:00:00\",\n        \"end_date\": \"2020-10-04 22:00:00\"\n    },\n    \"conv_value\": null,\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13b4604f45dd62587d2edf\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create category campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"CHOCOLATE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"paused\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [7],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"safari\"],\n        \"os\": [\"macintosh\"]\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a category campaign, so there your campaign will be targeted by the category you provide via category ID"
+					},
+					"response": [
+						{
+							"name": "create category campaign",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"CHOCOLATE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"paused\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [7],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"safari\"],\n        \"os\": [\"macintosh\"]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "461"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:15:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"CHOCOLATE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"paused\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [\n            7\n        ],\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"conv_value\": null,\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    },\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13bafd4f45dd62587d2ee3\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create campaign mobile devices",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"BROWNIE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"DE\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [7],\n        \"device\": [\"mobile\", \"tablet\"],\n        \"carriers\": [\n        \t\"tmob_de\",\n        \t\"voda_de\",\n        \t\"eplu_de\",\n        \t\"o2_de\",\n        \t\"aird_de\",\n        \t\"debi_de\",\n        \t\"other_de\"\n        ],\n        \"browsers\": [\"firefox\"],\n        \"os\": [\"android\", \"ios\", \"blackberry\"]\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a category campaign targeting mobile devices"
+					},
+					"response": [
+						{
+							"name": "create campaign mobile devices",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"BROWNIE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"DE\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [7],\n        \"device\": [\"mobile\", \"tablet\"],\n        \"carriers\": [\n        \t\"tmob_de\",\n        \t\"voda_de\",\n        \t\"eplu_de\",\n        \t\"o2_de\",\n        \t\"aird_de\",\n        \t\"debi_de\",\n        \t\"other_de\"\n        ],\n        \"browsers\": [\"firefox\"],\n        \"os\": [\"android\", \"ios\", \"blackberry\"]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "567"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:35:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"BROWNIE-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"category\",\n    \"budget_spread\": false,\n    \"cpc\": 0.2,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 50,\n    \"targeting\": {\n        \"country\": \"DE\",\n        \"traffic_category\": \"non-adult\",\n        \"categories\": [\n            7\n        ],\n        \"device\": [\n            \"mobile\",\n            \"tablet\"\n        ],\n        \"carriers\": [\n            \"tmob_de\",\n            \"voda_de\",\n            \"eplu_de\",\n            \"o2_de\",\n            \"aird_de\",\n            \"debi_de\",\n            \"other_de\"\n        ],\n        \"browsers\": [\n            \"firefox\"\n        ],\n        \"os\": [\n            \"android\",\n            \"ios\",\n            \"blackberry\"\n        ]\n    },\n    \"conv_value\": null,\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    },\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13bf984f45dd62587d2ee4\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create campaign whitelisting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"JELLO-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"jello\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"internet_explorer\"],\n        \"os\": [\"windows\"]\n    },\n    \"whitelisting\": true,\n    \"source_ids\": [\n    \t\"50250f2c978c8f2218000001\",\n    \t\"50250fced56cc0aa1f000001\"\n    ],\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a keyword campaign with a source id whitelist"
+					},
+					"response": [
+						{
+							"name": "create campaign whitelisting",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"JELLO-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"jello\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"internet_explorer\"],\n        \"os\": [\"windows\"]\n    },\n    \"whitelisting\": true,\n    \"source_ids\": [\n    \t\"50250f2c978c8f2218000001\",\n    \t\"50250fced56cc0aa1f000001\"\n    ],\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "588"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:47:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"JELLO-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\n            \"sweets\",\n            \"sugar\",\n            \"jello\"\n        ],\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"internet_explorer\"\n        ],\n        \"os\": [\n            \"windows\"\n        ]\n    },\n    \"whitelisting\": true,\n    \"source_ids\": [\n        \"50250f2c978c8f2218000001\",\n        \"50250fced56cc0aa1f000001\"\n    ],\n    \"time_settings\": {\n        \"start_date\": \"2016-10-04 22:00:00\",\n        \"end_date\": \"2020-10-04 22:00:00\"\n    },\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13c2954f45dd62587d2ee7\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create campaign source-id bidding",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaign_name\": \"LOLLIPOP-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 30,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"lollipop\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"chrome\"],\n        \"os\": [\"others\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    },\n    \"specific_source_ids\": [\n    \t{\n    \t\t\"source_id\": \"50250f2c978c8f2218000001\",\n    \t\t\"cpc\": 0.4\n    \t},\n    \t{\n    \t\t\"source_id\": \"50250fced56cc0aa1f000001\",\n    \t\t\"cpc\": 0.02\n    \t}\n    ]\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "creates a keyword campaign with source id bidding"
+					},
+					"response": [
+						{
+							"name": "create campaign source-id bidding",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"campaign_name\": \"LOLLIPOP-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 30,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\"sweets\", \"sugar\", \"lollipop\"],\n        \"device\": [\"desktop\"],\n        \"browsers\": [\"chrome\"],\n        \"os\": [\"others\"]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-05 00:00:00\",\n        \"end_date\": \"2020-10-05 00:00:00\"\n    },\n    \"specific_source_ids\": [\n    \t{\n    \t\t\"source_id\": \"50250f2c978c8f2218000001\",\n    \t\t\"cpc\": 0.4\n    \t},\n    \t{\n    \t\t\"source_id\": \"50250fced56cc0aa1f000001\",\n    \t\t\"cpc\": 0.02\n    \t}\n    ]\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "642"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:00:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_name\": \"LOLLIPOP-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"status\": \"active\",\n    \"budget\": 30,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"keywords\": [\n            \"sweets\",\n            \"sugar\",\n            \"lollipop\"\n        ],\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"chrome\"\n        ],\n        \"os\": [\n            \"others\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": \"2016-10-04 22:00:00\",\n        \"end_date\": \"2020-10-04 22:00:00\"\n    },\n    \"specific_source_ids\": [\n        {\n            \"source_id\": \"50250f2c978c8f2218000001\",\n            \"cpc\": 0.4\n        },\n        {\n            \"source_id\": \"50250fced56cc0aa1f000001\",\n            \"cpc\": 0.02\n        }\n    ],\n    \"conv_value\": null,\n    \"whitelisting\": false,\n    \"folder_id\": null,\n    \"campaign_id\": \"5c13c5914f45dd62587d2ee9\"\n}"
+						}
+					]
+				},
+				{
+					"name": "edit campaign set cpc",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cpc\": 0.03\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "sets cpc for a campaign"
+					},
+					"response": [
+						{
+							"name": "edit campaign set cpc",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"cpc\": 0.03\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns/5c13b6204f45dd62587d2ee1",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns",
+										"5c13b6204f45dd62587d2ee1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "493"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:07:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_id\": \"5c13b6204f45dd62587d2ee1\",\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"whitelisting\": false,\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"carriers\": [],\n        \"keywords\": [\n            \"bonbon\",\n            \"sugar\",\n            \"sweets\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "edit campaign set keywords",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"targeting\": {\n\t\t\"keywords\": [\"something\"]\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "sets keywords for a campaign"
+					},
+					"response": [
+						{
+							"name": "edit campaign set keywords",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"targeting\": {\n\t\t\"keywords\": [\"something\"]\n\t}\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns/5c13b6204f45dd62587d2ee1",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns",
+										"5c13b6204f45dd62587d2ee1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "479"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:08:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_id\": \"5c13b6204f45dd62587d2ee1\",\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"http://gph.is/2cpbE6Y\",\n    \"whitelisting\": false,\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"carriers\": [],\n        \"keywords\": [\n            \"something\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "edit campaign set url",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"url\": \"https://gph.is/10WWACh\"\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "sets url for a campaign"
+					},
+					"response": [
+						{
+							"name": "edit campaign set url",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"url\": \"https://gph.is/10WWACh\"\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns/5c13b6204f45dd62587d2ee1",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns",
+										"5c13b6204f45dd62587d2ee1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "480"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:10:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_id\": \"5c13b6204f45dd62587d2ee1\",\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"https://gph.is/10WWACh\",\n    \"whitelisting\": false,\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"carriers\": [],\n        \"keywords\": [\n            \"something\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "edit campaign set status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"paused\"\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "Sets the status to of a campaign to active, paused or archived"
+					},
+					"response": []
+				},
+				{
+					"name": "edit campaign set source-id whitelist",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"whitelisting\": true,\n\t\"source_ids\": [\n\t\t\"50250f2c978c8f2218000001\",\n    \t\"50250fced56cc0aa1f000001\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "sets source-id whitelist for a campaign"
+					},
+					"response": [
+						{
+							"name": "edit campaign set source-id whitelist",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"whitelisting\": true,\n\t\"source_ids\": [\n\t\t\"50250f2c978c8f2218000001\",\n    \t\"50250fced56cc0aa1f000001\"\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns/5c13b6204f45dd62587d2ee1",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns",
+										"5c13b6204f45dd62587d2ee1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "548"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:14:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_id\": \"5c13b6204f45dd62587d2ee1\",\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"https://gph.is/10WWACh\",\n    \"whitelisting\": true,\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"carriers\": [],\n        \"keywords\": [\n            \"something\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    },\n    \"source_ids\": [\n        \"50250f2c978c8f2218000001\",\n        \"50250fced56cc0aa1f000001\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "edit campaign set source-id bidding",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"specific_source_ids\": [\n\t\t{\n    \t\t\"source_id\": \"50250f2c978c8f2218000001\",\n    \t\t\"cpc\": 0.4\n    \t},\n    \t{\n    \t\t\"source_id\": \"50250fced56cc0aa1f000001\",\n    \t\t\"cpc\": 0.02\n    \t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						},
+						"description": "sets source-id bidding for a campaign"
+					},
+					"response": [
+						{
+							"name": "edit campaign set source-id bidding",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"specific_source_ids\": [\n\t\t{\n    \t\t\"source_id\": \"50250f2c978c8f2218000001\",\n    \t\t\"cpc\": 0.4\n    \t},\n    \t{\n    \t\t\"source_id\": \"50250fced56cc0aa1f000001\",\n    \t\t\"cpc\": 0.02\n    \t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns/5c13b6204f45dd62587d2ee1",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns",
+										"5c13b6204f45dd62587d2ee1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "607"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 15:11:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"campaign_id\": \"5c13b6204f45dd62587d2ee1\",\n    \"campaign_name\": \"BONBON-CAMPAIGN\",\n    \"ad_type\": \"ppr\",\n    \"campaign_type\": \"keyword\",\n    \"budget_spread\": false,\n    \"cpc\": 0.03,\n    \"url\": \"https://gph.is/10WWACh\",\n    \"whitelisting\": false,\n    \"status\": \"active\",\n    \"budget\": 3,\n    \"conv_value\": null,\n    \"folder_id\": null,\n    \"targeting\": {\n        \"country\": \"US\",\n        \"traffic_category\": \"non-adult\",\n        \"device\": [\n            \"desktop\"\n        ],\n        \"browsers\": [\n            \"safari\"\n        ],\n        \"carriers\": [],\n        \"keywords\": [\n            \"something\"\n        ],\n        \"os\": [\n            \"macintosh\"\n        ]\n    },\n    \"time_settings\": {\n        \"start_date\": null,\n        \"end_date\": null\n    },\n    \"specific_source_ids\": [\n        {\n            \"source_id\": \"50250f2c978c8f2218000001\",\n            \"cpc\": 0.4\n        },\n        {\n            \"source_id\": \"50250fced56cc0aa1f000001\",\n            \"cpc\": 0.02\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "list campaigns",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns"
+							]
+						},
+						"description": "lists your campaign"
+					},
+					"response": [
+						{
+							"name": "list campaigns",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/campaigns",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"campaigns"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "35707"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 13:18:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"campaignId\": \"57ee80121c68a18e84e4bcb7\",\n        \"name\": \"RON-US-DESKTOP-Archive\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57ee80ba1c68a18e84e4bcb8\",\n        \"name\": \"RON-US-DESKTOP-BLa-cpc\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57ee919d1c68a18e84e4bcc2\",\n        \"name\": \"RON-US-DESKTOP-Bla(Copy)\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57ee91ea1c68a18e84e4bcc3\",\n        \"name\": \"RON-US-MOBILE-Bla\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57ee9b9a3213e1f6b65c971f\",\n        \"name\": \"CATEGORY-US-DESKTOP-BLa\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57ee9e763213e1f6b65c9720\",\n        \"name\": \"RON-CH-DESKTOP-BLa\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57eea34e3213e1f6b65c9721\",\n        \"name\": \"RON-US-DESKTOP-BLa\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57eea5443213e1f6b65c9722\",\n        \"name\": \"RON-US-DESKTOP-Bla\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"57f2495926f6e40cccc2e2bc\",\n        \"name\": \"CATEGORY-US-MOBILE-Test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57f2500e26f6e40cccc2e2bd\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"57f2519726f6e40cccc2e2be\",\n        \"name\": \"RON-AT-DESKTOP-Bla(Copy)(Copy)(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"57f2557026f6e40cccc2e2c3\",\n        \"name\": \"RON-US-DESKTOP-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57f259b226f6e40cccc2e2c6\",\n        \"name\": \"RON-US-DESKTOP-BLub\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"57f25ad226f6e40cccc2e2c8\",\n        \"name\": \"RON-US-DESKTOP-Blass\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57f26479105f546b6b6bd60f\",\n        \"name\": \"RON-US-DESKTOP-Blass\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57f2687e4f6c5972c7ae0c31\",\n        \"name\": \"RON-US-DESKTOP-BLass\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57f4fb871d80830853b876a1\",\n        \"name\": \"RON-US-DESKTOP-BLass\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fb7e66691ab2f0c619dd96\",\n        \"name\": \"RON-US-DESKTOP-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fb7eb1691ab2f0c619dd97\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"57fb81b5691ab2f0c619dd9a\",\n        \"name\": \"CATEGORY-US-DESKTOP-Blab\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fcd069580b670d685cedef\",\n        \"name\": \"RON-US-DESKTOP-Blasss\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fcdbcf580b670d685cedf0\",\n        \"name\": \"RON-US-MOBILE-BLaa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fcdec1580b670d685cedf1\",\n        \"name\": \"RON-US-MOBILE-BLaa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fce0a8580b670d685cedf2\",\n        \"name\": \"CATEGORY-US-DESKTOP-Category\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fce12e580b670d685cedf3\",\n        \"name\": \"KEYWORD-US-DESKTOP-Keyword\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"57fce4b4c3bab851bc20673b\",\n        \"name\": \"KEYWORD-US-DESKTOP-Keyword\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5804a01e47aa870df89d6ae9\",\n        \"name\": \"KEYWORD-US-MOBILE-my own test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5804daae29a5c529b419d2de\",\n        \"name\": \"CATEGORY-US-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5809d77755b9c80612c9dbe2\",\n        \"name\": \"RON-US-DESKTOP-Bla\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"5809d80b55b9c80612c9dbe3\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"5809d8ca0e64114a337286cd\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581088bb72902b0d4c53acd8\",\n        \"name\": \"RON-US-DESKTOP-ysas\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5810b6d572902b0d4c53acd9\",\n        \"name\": \"RON-US-DESKTOP-fu\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5810b9e31961290775e22504\",\n        \"name\": \"RON-US-DESKTOP-Bla\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5815dcaec21893075d227b72\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58160f99c21893075d227b73\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581617b7c21893075d227b74\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58164e800ca3cb3d9b433224\",\n        \"name\": \"RON-US-DESKTOP-foo12345\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5817151dbb716a079ce42f83\",\n        \"name\": \"RON-US-DESKTOP-as\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581b1c1b2462aa2a2aa075dd\",\n        \"name\": \"RON-US-DESKTOP-asdasda\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581c857b7eb47049610b0b96\",\n        \"name\": \"RON-PS-DESKTOP-TESTIT\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581c87b77eb47049610b0b97\",\n        \"name\": \"RON-US-DESKTOP-zefixklumpvareckts\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581df19381818ab603d7511e\",\n        \"name\": \"Copy-RON-US-DESKTOP-Bla bla\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"581e0ea0f72869ff1d628818\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"582350e7a5e45e2b2a99b1ee\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58235284a5e45e2b2a99b1ef\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58288e35d319ce0a8d6ce14a\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58288ec4d319ce0a8d6ce14b\",\n        \"name\": \"RON-US-MOBILE-SuperCampaign\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5828900dd319ce0a8d6ce14c\",\n        \"name\": \"RON-US-DESKTOP-SuperCampaign\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5829ebbc302b62f85e8e1da9\",\n        \"name\": \"CATEGORY-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829eecf29a403f9e3639ff3\",\n        \"name\": \"CATEGORY-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829efdfd811a20535bf52d5\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829f056f5a2c008992c48c8\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829f097f5a2c008992c48c9\",\n        \"name\": \"CATEGORY-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829f1ab0c5edb0e681b2712\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5829f21d62ffd01106009ad0\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"582b7075b3e0b3b4eb81ec17\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58348d7a2c45e90c8a2c8420\",\n        \"name\": \"RON-US-DESKTOP-asdd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"583491f52c45e90c8a2c8421\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"583819c4b550013305dcbf8d\",\n        \"name\": \"RON-US-DESKTOP-this is the new one\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58384a5eef107f0ac5b31611\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58384b15ef107f0ac5b31612\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58386032ee19445976b92095\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"583aebcf8ef9132e9e8d6a41\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583aebfc8ef9132e9e8d6a42\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583aecb38ef9132e9e8d6a43\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583aecfe8ef9132e9e8d6a44\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d485dbb26de1725651dee\",\n        \"name\": \"CATEGORY-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"583d605dfa8246246492ac8d\",\n        \"name\": \"Copy-RON-US-DESKTOP-Bla bla(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d825269527b1aa0c98e65\",\n        \"name\": \"KEYWORD-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d826a69527b1aa0c98e66\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d82b269527b1aa0c98e67\",\n        \"name\": \"RON-US-DESKTOP-BLass(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d837369527b1aa0c98e68\",\n        \"name\": \"RON-US-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d83e169527b1aa0c98e69\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"583d83f269527b1aa0c98e6a\",\n        \"name\": \"RON-US-MOBILE-BLaa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5846cea55b8f3a519afc2cbe\",\n        \"name\": \"RON-US-DESKTOP-asd(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"584e96cfae985b2572037647\",\n        \"name\": \"CATEGORY-US-DESKTOP-categories\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"584e977dae985b2572037648\",\n        \"name\": \"CATEGORY-US-DESKTOP-categories-duplicate\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"584ecfb53e6b671bb0771e63\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"584ed22f4aafe74a4b0d3119\",\n        \"name\": \"CATEGORY-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58511c603bf0be092bc5cb74\",\n        \"name\": \"RON-US--asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"585125837bce860ec4f77142\",\n        \"name\": \"RON-US-DESKTOP-testing my campaign\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"585125957bce860ec4f77143\",\n        \"name\": \"RON-US-DESKTOP-testing my campaign2\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58513f8f7bce860ec4f77144\",\n        \"name\": \"RON-US-DESKTOP-wtf?\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58595a59740f1f4132542356\",\n        \"name\": \"RON-US-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58595d68e29e5dfd41edf7e3\",\n        \"name\": \"RON-US-MOBILE-mobile-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"585aae6f43f30d07e798402f\",\n        \"name\": \"CATEGORY-US-DESKTOP-Bla BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"585ab11543f30d07e7984030\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"585b8e1fe79cb4396b637b3a\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58650a87aaab6f1b69e5dd62\",\n        \"name\": \"RON-US-MOBILE-MARTIN\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58650ae8aaab6f1b69e5dd63\",\n        \"name\": \"RON-US-MOBILE-MARTIN\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651487137d1c61874b1f13\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586514df137d1c61874b1f14\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5865154e819f0c00206fe706\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651636819f0c00206fe707\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651708819f0c00206fe708\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651875819f0c00206fe709\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586518c7819f0c00206fe70a\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651944819f0c00206fe70b\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586519f6819f0c00206fe70c\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58651a65819f0c00206fe70d\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58651b2f819f0c00206fe70e\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58651b69819f0c00206fe70f\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58651bf8819f0c00206fe710\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58651c2a819f0c00206fe711\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"586a12252f390715bfaf87bc\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a13472f390715bfaf87bd\",\n        \"name\": \"Copy-RON-US-DESKTOP-Bla bla(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a13802f390715bfaf87be\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a13b92f390715bfaf87bf\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a14212f390715bfaf87c0\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a17022f390715bfaf87c1\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"586a17402f390715bfaf87c2\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a177a2f390715bfaf87c3\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a18b12f390715bfaf87c4\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Cop\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a200a2f390715bfaf87c5\",\n        \"name\": \"RON-US-MOBILE-Hallo\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586a2028c8292064d6ec4955\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a20702f390715bfaf87c6\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586a2080c8292064d6ec4956\",\n        \"name\": \"RON-US-DESKTOP-zefixklumpvareckts(Copy)\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"586a216583f2ab6a011bb979\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a217283f2ab6a011bb97a\",\n        \"name\": \"RON-US-DESKTOP-zefixklumpvareckts(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a23132f390715bfaf87c7\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586a260b2f390715bfaf87c8\",\n        \"name\": \"KEYWORD-SM-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586a6a3a2f390715bfaf87c9\",\n        \"name\": \"RON-US-MOBILE-Bla\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"586bc6cea3e88433eb2424dc\",\n        \"name\": \"RON-US-MOBILE-Bla(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bc885db27f93a9de87e55\",\n        \"name\": \"RON-US-MOBILE-Bla(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bc8b5db27f93a9de87e56\",\n        \"name\": \"RON-US-DESKTOP-test(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bd0ecf63d155a75e86537\",\n        \"name\": \"RON-US-MOBILE-SuperCampaign(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bd7faf63d155a75e86538\",\n        \"name\": \"RON-US-MOBILE-SuperCampaign(Copy)(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bd822f63d155a75e86539\",\n        \"name\": \"RON-US-DESKTOP-foo(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"586bd89cf63d155a75e8653a\",\n        \"name\": \"RON-US-DESKTOP-foo12345(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58735c3e76386f3311e638bc\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58735c665e6c8e339ddfdf30\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa(Copy)(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58735e47ae73211d80a89439\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58735f54ae73211d80a8943a\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5873617d5e6c8e339ddfdf31\",\n        \"name\": \"RON-US-DESKTOP-123123\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587361ced8566a0ddc24c48f\",\n        \"name\": \"RON-CH-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"587362445e6c8e339ddfdf32\",\n        \"name\": \"RON-US-DESKTOP-123123\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587364e8ae73211d80a8943b\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587366dcae73211d80a8943c\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58736717ae73211d80a8943d\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58736735ae73211d80a8943e\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58736753ae73211d80a8943f\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587367ccae73211d80a89440\",\n        \"name\": \"CATEGORY-US-MOBILE-BLa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587382e9a9f2a622a0f9e3c0\",\n        \"name\": \"CATEGORY-US-MOBILE-BLaggg\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58765715da427612e65fe4e7\",\n        \"name\": \"RON-US-DESKTOP-floatcpc\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58778d738013857d03776128\",\n        \"name\": \"RON-US-DESKTOP-kartoffelbrei_blacklistTest\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"587bee18c3a0878fe89324c4\",\n        \"name\": \"RON-US-DESKTOP-BLa-cpc test(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58821f8bdd7e0674197554df\",\n        \"name\": \"RON-US-DESKTOP-blacklisting_campaign_test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58871d287130700e62d567ac\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58871d7a7130700e62d567ad\",\n        \"name\": \"RON-US-DESKTOP-asdf\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588721d043cf7810b3e33d9b\",\n        \"name\": \"RON-US-DESKTOP-asdf\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588726facae05027725ff8c0\",\n        \"name\": \"RON-US-DESKTOP-dd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588728345ef2cd2bce7c29b5\",\n        \"name\": \"RON-US-DESKTOP-d\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58872a217368912e9605345d\",\n        \"name\": \"RON-US-DESKTOP-ezpezus\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58877055405cdb17ec501a5a\",\n        \"name\": \"KEYWORD-US-MOBILE-test123\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58889fb00e70e1244c6d1409\",\n        \"name\": \"CATEGORY-DE-MOBILE-testpop1\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5888b66a0e70e1244c6d140b\",\n        \"name\": \"KEYWORD-GB-MOBILE-test123-1\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588cc5a4f91e5960c8e8072e\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588cca28845ac37303348bf3\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588ccc0b845ac37303348bf4\",\n        \"name\": \"KEYWORD-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588ccfb47d80887ceae215f0\",\n        \"name\": \"KEYWORD-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588cd0db7d80887ceae215f2\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588cd1107d80887ceae215f3\",\n        \"name\": \"CATEGORY-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"588e4dc444ba3cae436ee106\",\n        \"name\": \"KEYWORD-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589216ddaa0a6612b90ed4c8\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58921a25aa0a6612b90ed4c9\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58921c17aa0a6612b90ed4cb\",\n        \"name\": \"RON-US-TABLET-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58936adabb06da23e5db81c1\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58936b04bb06da23e5db81c2\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894443878d8d00a4ea45513\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894454ae65a4f10fca00aec\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58944da3e65a4f10fca00aed\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58944e03e65a4f10fca00aee\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589453a8e65a4f10fca00aef\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945401e65a4f10fca00af0\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945543e65a4f10fca00af1\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894559ce65a4f10fca00af2\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894566de65a4f10fca00af3\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589456c1e65a4f10fca00af4\",\n        \"name\": \"KEYWORD-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945728e65a4f10fca00af5\",\n        \"name\": \"KEYWORD-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945853e65a4f10fca00af6\",\n        \"name\": \"KEYWORD-US-TABLET-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589458ade65a4f10fca00af7\",\n        \"name\": \"CATEGORY-US-TABLET-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894598ee65a4f10fca00af8\",\n        \"name\": \"CATEGORY-US-TABLET-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589459bce65a4f10fca00af9\",\n        \"name\": \"CATEGORY-US-TABLET-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945e95e65a4f10fca00afa\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58945f8de65a4f10fca00afb\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58946098e65a4f10fca00afc\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894617a61b2657b4c504a65\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589461a261b2657b4c504a66\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58946bb161b2657b4c504a67\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58946eb5e88350921369f7f8\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58946ee6e88350921369f7f9\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894702ae88350921369f7fa\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589470a1e88350921369f7fb\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589470bbe88350921369f7fc\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894711be88350921369f7fd\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5894713ee88350921369f7fe\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589471dbe88350921369f7ff\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589471fae88350921369f800\",\n        \"name\": \"RON-US-DESKTOP-https://url.com\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58948b2bd1de810cbedaf5d2\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58948b7fd1de810cbedaf5d3\",\n        \"name\": \"RON-US-DESKTOP-ads\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5899db73617d1e7296eda2a4\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5899de2f617d1e7296eda2a5\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589c2d4ac0f2ab3148085afe\",\n        \"name\": \"RON-US-DESKTOP-testing\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589c6b04a8d417145ef99aca\",\n        \"name\": \"KEYWORD-DE-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"589dd973f833110a2881071d\",\n        \"name\": \"RON-CH-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58a305b30c2da20da0cf6884\",\n        \"name\": \"RON-CH-DESKTOP-BLa(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"58a306790c2da20da0cf6885\",\n        \"name\": \"RON-TH-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58a307190c2da20da0cf6886\",\n        \"name\": \"KEYWORD-DE-TABLET-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58a30b197b0f2019ac899315\",\n        \"name\": \"RON-US-DESKTOP-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58a30b3e7b0f2019ac899316\",\n        \"name\": \"KEYWORD-US-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58a30c837b0f2019ac899317\",\n        \"name\": \"CATEGORY-US-MOBILE-test\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58a30fa33612a22712a8340c\",\n        \"name\": \"KEYWORD-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58b3df73580ef61e7b6db5d1\",\n        \"name\": \"RON-PS-DESKTOP-JUST-TODAY-TEST2\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58d0ff6022c2d81f6a3a3470\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58d26325288f1d2ae2033f13\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58d4ffe9e86bfa2b9ded4f70\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58d4fff21f1ce6201879ab8e\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"archived\"\n    },\n    {\n        \"campaignId\": \"58eb3b0902f3d6f9c2bc7f2b\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58eb9ed238535917c2d14c9a\",\n        \"name\": \"RON-US-DESKTOP-123\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58ee12af36d0c2bc44ab932a\",\n        \"name\": \"RON-US-DESKTOP-browser-others-check\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58f8c2950f7064d5329fd8b0\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58fa1d35507c16ed8b86e2e5\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58fdb03d1f89cd162aed1eda\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"58fdb0d9c18a921ce6d3ece9\",\n        \"name\": \"RON-US-MOBILE-as\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"590b27cbb8287021eb4d5249\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"590b2854d183b32dcc811a37\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"590b4f6b4fe2aa420de8183c\",\n        \"name\": \"KEYWORD-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"591447fe8d67193ab9496d3e\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"591448532e4187b1e5b77d0d\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"591ab49d0f6b3e7b09bc89b4\",\n        \"name\": \"RON-US-DESKTOP-bla\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"593a9ed8ac1b014f9f2a8a77\",\n        \"name\": \"RON-US-DESKTOP-ysas(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"593a9f5bac1b014f9f2a8a78\",\n        \"name\": \"RON-US-DESKTOP-zefixklumpvareckts(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"593a9f6bac1b014f9f2a8a79\",\n        \"name\": \"RON-PS-DESKTOP-TESTIT(Copy)\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"596615dfcd95de70dd7d3528\",\n        \"name\": \"RON-US-DESKTOP-archivetest\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"59b79f872a368b3cffc72a23\",\n        \"name\": \"RON-US-DESKTOP-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"59c26619a5fc7a404179b279\",\n        \"name\": \"RON-US-MOBILE-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5adedc5044d2b94e2322a3d2\",\n        \"name\": \"RON-US-DESKTOP-asd\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5b431a42c6f86ac47efb34b2\",\n        \"name\": \"KEYWORD-US-DESKTOP-..,-\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be994b35d5b03a0ec231931\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99546b97faea1169f90b5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9956f2aedb5a12460c472\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9976668c19aa23b4276b0\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be998f9a8c6f8a2be0d7f9d\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9992757514ba2cff2605c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99ad1887078a35974f564\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99c1bc27a30a3bafc02e7\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99c39986bdba3c58c37bb\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99e5ad1ce38a44dca15e5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be99f4fb81a77a4a5055520\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a02c4701dfa4fba2082d\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a03cbd3716a505862d56\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a0590914b6a50cbca105\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a0ad0914b6a50cbca106\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a1f216c789a579f008dd\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a222b30d0da5936c0a5a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a2c8102943a5cac6cba6\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a328366c9da5e02b7291\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a3ae106f52a60f378b9c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5be9a430106f52a60f378b9d\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea8092106f52a60f378b9e\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea868b2241fba8e300965a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea872224351fa8f69f30de\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea89f60623eea9a2376d35\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea8aadd7cec6a9b856d267\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea8cb3d7cec6a9b856d268\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea8d78a8ad84aa8baf4bda\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea8fc5923d2cab7c670414\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea96e8c13efaad6fe67a59\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea9d17bbc001afc7b05359\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bea9d6bed6659afebd4e6ce\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaa878e2fafab335b1655a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaaa9af0c3a0b3c9b961d3\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaaea3f0c3a0b3c9b961d4\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beab0ee787aa6b50cd27db1\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaddfb787aa6b50cd27db2\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beadfdade8412b8a3fb2fa9\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae00fde8412b8a3fb2faa\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae06bd78db8b8be80f50e\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae156cd070cb918f111f1\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae18c1a4e36b9285ac930\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae1b50ce041b935358b8e\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae23f8e7d26b979b41b11\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae26221c6d4b986338f46\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae2ec648819b9a4d64536\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae656487ec4bac830018f\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beae67ed2e5f0bae1a61c3f\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaea72aa92d1bbe9b9d77d\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaedeab3ce4fbd81d8cf4d\",\n        \"name\": \"KEYWORD_DE_MOBILE_bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf177ba790abd985fbed8\",\n        \"name\": \"KEYWORD-DE-MOBILE-bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf1fd2eabd4be976e90c9\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf21d2eabd4be976e90ca\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf3a32eabd4be976e90cb\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf3d8a15081bf023fc61c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf5f9086490c01287437a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf6d7d04f21c03c8a8f0d\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beaf6fcd04f21c03c8a8f0e\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebe106d04f21c03c8a8f0f\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebe15839ea25c31ad636b0\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebe333a34242c39a78e3e6\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebee0ea34242c39a78e3e9\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf058106cacc6291082ba\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf31549c6fdc717442e7c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf3288edffac72092a6f6\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf3ae8c6264c76e5ee126\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf4295610f6c7a607f73b\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf43ec951bac7ae8f80fa\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf44b3b0ebdc7b63de684\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf560c382b6c805d9c9c7\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf64993f4e3c844a56fde\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf91d67b6bdc971e600ae\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebf9df784439c9b35957d3\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebfbc8784439c9b35957d4\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebfcda784439c9b35957d5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bebfd123ffc68ca59ffe0ea\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec0d23181197ccad6c9094\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec1051eaea5dcd99160f44\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec2bd67e418ed4fa535bcc\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec2c2a9536efd5120e0b25\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec2c5527f540d524107b6b\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec2c95898a4ed53752bd66\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec2ef4f99c61d5dd7aca06\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bec3b0f23978bda6bc0d542\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed669923978bda6bc0d543\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed670680481fe4ce73c7c5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed675f06c714e4ece407d3\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed67d4b83835e50b94d897\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed67e39a5857e51275ba61\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed681a683e05e528a355af\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6b5b8f120ce66395041a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6bd4dedab1e6899f4c15\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6ce68d1683e70a94aee5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6cfa13df8ae714be0f72\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6dccc74b5ee71f4f0286\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed6f98f35d17e7f66ed9b8\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed91ec9e9876edcf88e29c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed92262e984fede36c98b5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed924ca7fdb4edf2f645b3\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bed9314a7fdb4edf2f645b4\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bee78e0a7fdb4edf2f645b5\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bee7abfa7fdb4edf2f645b6\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bee86b178b668f61a0f9e98\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bee9ccc447829fcf3d2e8d0\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bee9db6aa7e85fd67bc2c2a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beebfed6cb1030412017187\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beed301a744f4097b7980a3\",\n        \"name\": \"wi\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5beedcf33034ab0cb8a503ab\",\n        \"name\": \"wi\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2a08ca5f32e1e835db44f\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2ade2efea8d2059eea330\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2b3d4efea8d2059eea331\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2d3859647b72cc732e6e6\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2d3d1208b302cf235d451\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf2d3f0f436a52cfcdbae41\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf421b8090d1d47a6c50a91\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf4269d090d1d47a6c50a92\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf42c85dcf6c530fdd63baa\",\n        \"name\": \"dude 1\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf42c97dcf6c530fdd63bab\",\n        \"name\": \"dude 2\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf42ca4dcf6c530fdd63bac\",\n        \"name\": \"dude 2\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf42e4cdcf6c530fdd63baf\",\n        \"name\": \"dude 2\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf430a6dcf6c530fdd63bb0\",\n        \"name\": \"dude 2\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf430d6dcf6c530fdd63bb2\",\n        \"name\": \"dude 2\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf54fc3118f3252010d435b\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf54fc9118f3252010d435c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5588824a04d5436e59e6c\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf558a897f3dd545ec60ae2\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5594103dc0254a5542a51\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5595803dc0254a5542a52\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55a03fd25b954e058781a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55b758563e95545fe3c8f\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55bcf1f33f85561d02bd8\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55d79eeb7365624e448bf\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55d98ed18ed5632cfdd4a\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55dbe543f055640e27381\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55e0eed81ac56507099dc\",\n        \"name\": \"bloede Q\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55e31ed81ac56507099dd\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55ee75fc372568a60b29d\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55f15d2dec1569ab79923\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55f21d2dec1569ab79924\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55f6822daad56acc94b05\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55f8504e76b56b55651ed\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55fabd743f956bf03aadb\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55fcb0a345356c88973d9\",\n        \"name\": \"bloede Q!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf55fe50a345356c88973da\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5601d0a345356c88973db\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf560460699e056dd64339d\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf560b2b11727571145685a\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf560e8b491c75720c89f6c\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf561110cd92e572c1c1b43\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf561160cd92e572c1c1b44\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5623d2f3f975793d40354\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5628643144e57ac717834\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf5680db7b7bc599bbddfb8\",\n        \"name\": \"bloede Q! Du Nase!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf66844d51f5d2493ddd88b\",\n        \"name\": \"RON-US-DESKTOP-BLass\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5bf6a930cab978063b9621f2\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf6a99087bd12067295fe39\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bf6aa0d2b60d306a3b27836\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bfbb79032b1820d9ba25bee\",\n        \"name\": \"RON-US-DESKTOP-ssdfsdfsdf\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5bfc0c0f268ed230e662ea65\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bfd291e1e28fed596725dd7\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bfd29341e28fed596725dd8\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bfd29a61e28fed596725dd9\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bfd29b11e28fed596725dda\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bffe4861cdcef02e92b2dfe\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5bffe4f01cdcef02e92b2dff\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5c07835c5334844b7c25d479\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5c07835e5334844b7c25d47a\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5c07849849f5f345f98bf08e\",\n        \"name\": \"bloede Q! REALLY!\",\n        \"status\": \"paused\"\n    },\n    {\n        \"campaignId\": \"5c0fcd89f0220d21d20142b3\",\n        \"name\": \"DONUT-CAMPAIGN\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5c0fcebbf0220d21d20142b4\",\n        \"name\": \"DONUT-CAMPAIGN\",\n        \"status\": \"active\"\n    },\n    {\n        \"campaignId\": \"5c0fcedaf0220d21d20142b5\",\n        \"name\": \"DONUT-CAMPAIGN\",\n        \"status\": \"active\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get campaign details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId"
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Campaign Statistics",
+			"item": [
+				{
+					"name": "get campaign statistics by source id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId/statistics?cluster_by=source_id&from=2019-01-01&to=2019-02-01",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId",
+								"statistics"
+							],
+							"query": [
+								{
+									"key": "cluster_by",
+									"value": "source_id"
+								},
+								{
+									"key": "from",
+									"value": "2019-01-01"
+								},
+								{
+									"key": "to",
+									"value": "2019-02-01"
+								}
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get campaign statistics by browser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/campaigns/:campaignId/statistics?cluster_by=browser&from=2019-01-01&to=2019-02-01",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"campaigns",
+								":campaignId",
+								"statistics"
+							],
+							"query": [
+								{
+									"key": "cluster_by",
+									"value": "browser"
+								},
+								{
+									"key": "from",
+									"value": "2019-01-01"
+								},
+								{
+									"key": "to",
+									"value": "2019-02-01"
+								}
+							],
+							"variable": [
+								{
+									"key": "campaignId",
+									"value": "<campaign-id>"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get campaign statistics by browser",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api-key",
+										"value": "673735275f6d8130ae4276c22e9b8b58af08d076e35c7af81bff0dcb4d2bac26989681cd355249a3f33be20cddca722862031e3a1883b2003d7e368309e986d3",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/v1/campaigns/:campaignId/statistics?cluster_by=browser&from=2019-01-01&to=2019-02-01",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"v1",
+										"campaigns",
+										":campaignId",
+										"statistics"
+									],
+									"query": [
+										{
+											"key": "cluster_by",
+											"value": "browser"
+										},
+										{
+											"key": "from",
+											"value": "2019-01-01"
+										},
+										{
+											"key": "to",
+											"value": "2019-02-01"
+										}
+									],
+									"variable": [
+										{
+											"key": "campaignId",
+											"value": "591630aee6141c0a4e62f81f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "840"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jul 2019 12:14:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"browser\": \"chrome\",\n        \"auctions\": 6349,\n        \"clicks\": 2737,\n        \"cost\": 167.45639034,\n        \"winrate\": 43.1092,\n        \"cost_per_click\": 0.061182459021,\n        \"conversions\": 0,\n        \"conversion_rate\": 0,\n        \"payout\": 0\n    },\n    {\n        \"browser\": \"firefox\",\n        \"auctions\": 136,\n        \"clicks\": 75,\n        \"cost\": 4.50869966,\n        \"winrate\": 55.1471,\n        \"cost_per_click\": 0.060115995467,\n        \"conversions\": 0,\n        \"conversion_rate\": 0,\n        \"payout\": 0\n    },\n    {\n        \"browser\": \"internet_explorer\",\n        \"auctions\": 41,\n        \"clicks\": 11,\n        \"cost\": 0.65289998,\n        \"winrate\": 26.8293,\n        \"cost_per_click\": 0.059354543636,\n        \"conversions\": 0,\n        \"conversion_rate\": 0,\n        \"payout\": 0\n    },\n    {\n        \"browser\": \"opera\",\n        \"auctions\": 1212,\n        \"clicks\": 441,\n        \"cost\": 26.88629821,\n        \"winrate\": 36.3861,\n        \"cost_per_click\": 0.060966662608,\n        \"conversions\": 0,\n        \"conversion_rate\": 0,\n        \"payout\": 0\n    },\n    {\n        \"browser\": \"safari\",\n        \"auctions\": 10410,\n        \"clicks\": 4275,\n        \"cost\": 260.72628232,\n        \"winrate\": 41.0663,\n        \"cost_per_click\": 0.060988604051,\n        \"conversions\": 0,\n        \"conversion_rate\": 0,\n        \"payout\": 0\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "list categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/categories",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"categories"
+							]
+						},
+						"description": "receive a list of all categories you can apply to campaigns"
+					},
+					"response": [
+						{
+							"name": "get categories",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/categories",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2563"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:02:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"category_id\": 1,\n        \"category\": \"Apparel & Clothing\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 2,\n        \"category\": \"Beauty & Cosmetics\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 3,\n        \"category\": \"Computers\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 4,\n        \"category\": \"Consumer Electronics\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 5,\n        \"category\": \"Family\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 6,\n        \"category\": \"Finance\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 7,\n        \"category\": \"Food\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 8,\n        \"category\": \"Health\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 9,\n        \"category\": \"Hobbies\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 10,\n        \"category\": \"Home & Garden\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 11,\n        \"category\": \"Law & Government Services\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 12,\n        \"category\": \"Media & Events\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 13,\n        \"category\": \"Books\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 14,\n        \"category\": \"Real Estate\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 15,\n        \"category\": \"Sports & Fitness\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 16,\n        \"category\": \"Travel\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 17,\n        \"category\": \"Vehicles\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 18,\n        \"category\": \"Entertainment\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 19,\n        \"category\": \"Social\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 20,\n        \"category\": \"Education\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 21,\n        \"category\": \"Jobs\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 22,\n        \"category\": \"Insurance\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 23,\n        \"category\": \"Dating\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 24,\n        \"category\": \"Classifieds & Auctions\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 25,\n        \"category\": \"Gifts & Rewards\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 26,\n        \"category\": \"Search\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 27,\n        \"category\": \"ISPs/Telecommunication\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 28,\n        \"category\": \"Internet/Portals\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 29,\n        \"category\": \"Hosting/Domains\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 30,\n        \"category\": \"Games\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 31,\n        \"category\": \"Software\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 32,\n        \"category\": \"Shopping\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 33,\n        \"category\": \"Retail\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 34,\n        \"category\": \"News\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 35,\n        \"category\": \"Animals\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 36,\n        \"category\": \"Religion & Spirituality\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 37,\n        \"category\": \"Tube\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 38,\n        \"category\": \"Sextoys\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 39,\n        \"category\": \"Gay\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 40,\n        \"category\": \"Lesbian\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 41,\n        \"category\": \"Escort\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 42,\n        \"category\": \"Casual Dating\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 43,\n        \"category\": \"Uncategorized\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 44,\n        \"category\": \"General\",\n        \"adult\": 1\n    },\n    {\n        \"category_id\": 45,\n        \"category\": \"Credit Cards\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 46,\n        \"category\": \"Coupon offers\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 47,\n        \"category\": \"Personal Loan\",\n        \"adult\": 0\n    },\n    {\n        \"category_id\": 48,\n        \"category\": \"Cash advance\",\n        \"adult\": 0\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Carriers",
+			"item": [
+				{
+					"name": "list carriers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/carriers?country=DE",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"carriers"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "DE"
+								}
+							]
+						},
+						"description": "It is mandatory for our mobile campaigns to have set a carrier. As there are multiple carriers, you can get a list of carriers we support with this helper endpoint.\n\nWe recommend you cache the carrier list, as it will only change in rare occasions."
+					},
+					"response": [
+						{
+							"name": "campaign carriers",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/carriers?country=DE",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"carriers"
+									],
+									"query": [
+										{
+											"key": "country",
+											"value": "DE"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "514"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:25:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"carrier_id\": 112,\n        \"name\": \"T-Mobile\",\n        \"identifier\": \"tmob_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 113,\n        \"name\": \"Vodafone\",\n        \"identifier\": \"voda_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 114,\n        \"name\": \"E-Plus\",\n        \"identifier\": \"eplu_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 116,\n        \"name\": \"o2\",\n        \"identifier\": \"o2_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 117,\n        \"name\": \"AIRDATA\",\n        \"identifier\": \"aird_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 784,\n        \"name\": \"Debitel\",\n        \"identifier\": \"debi_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 1876,\n        \"name\": \"Others\",\n        \"identifier\": \"other_de\",\n        \"country\": \"de\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Countries",
+			"item": [
+				{
+					"name": "list countries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"type": "text",
+								"value": "{{tonic_api_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/countries",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"countries"
+							]
+						},
+						"description": "We accept country codes according to ISO 3166-1 Alpha-2  which define two-letter country codes. If you do not want to implement this yourself, you can use this helper endpoint.\n\nWe recommend you cache this list, as it is unlikely to change."
+					},
+					"response": [
+						{
+							"name": "campaign carriers",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api-key",
+										"type": "text",
+										"value": "b6e06ab944148d5b674f257fab096e7c807141a6948480e3eabd28ae83b78a1c76a433a5dc2b57455bf0b396be5ce123a0db62779d5d48674ef941eb98c0255d"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://api.advertiser.tonic.com/v1/carriers?country=DE",
+									"protocol": "http",
+									"host": [
+										"api",
+										"advertiser",
+										"tonic",
+										"com"
+									],
+									"path": [
+										"v1",
+										"carriers"
+									],
+									"query": [
+										{
+											"key": "country",
+											"value": "DE"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "514"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Dec 2018 14:25:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"carrier_id\": 112,\n        \"name\": \"T-Mobile\",\n        \"identifier\": \"tmob_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 113,\n        \"name\": \"Vodafone\",\n        \"identifier\": \"voda_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 114,\n        \"name\": \"E-Plus\",\n        \"identifier\": \"eplu_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 116,\n        \"name\": \"o2\",\n        \"identifier\": \"o2_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 117,\n        \"name\": \"AIRDATA\",\n        \"identifier\": \"aird_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 784,\n        \"name\": \"Debitel\",\n        \"identifier\": \"debi_de\",\n        \"country\": \"de\"\n    },\n    {\n        \"carrier_id\": 1876,\n        \"name\": \"Others\",\n        \"identifier\": \"other_de\",\n        \"country\": \"de\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "create daily report job for a campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"daily-single-campaign\",\n    \"schedule\": \"daily\",\n    \"parameters\": {\n    \t\"campaign_id\": \"<the-campaign-id>\",\n        \"cluster_by\": \"source_id\",\n        \"interval\": \"hours\",\n        \"device_type\": \"desktop\",\n        \"os\": [\"windows\", \"macintosh\"]\n    },\n    \"emails\": [\"your.account@email-address.com\"]\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/reportjobs",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"reportjobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create one-time report for single campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"one-time-single-campaign\",\n    \"schedule\": \"once\",\n    \"parameters\": {\n    \t\"campaign_id\": \"57ee80121c68a18e84e4bcb7\",\n        \"cluster_by\": \"month\",\n        \"interval\": \"days\",\n        \"device_type\": \"mobile\",\n        \"os\": [\"android\", \"ios\"]\n    },\n    \"from\": \"2019-01-01 00:00:00\",\n    \"to\": \"2019-02-01 23:59:59\",\n    \"emails\": [\"demo@tonic.com\"]\n}"
+						},
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/reportjobs",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"reportjobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/reportjobs",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"reportjobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get report job details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/reportjobs/:jobId",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"reportjobs",
+								":jobId"
+							],
+							"variable": [
+								{
+									"key": "jobId",
+									"value": "<reportjob-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list reports for a job",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/reportjobs/:jobId/reports",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"reportjobs",
+								":jobId",
+								"reports"
+							],
+							"variable": [
+								{
+									"key": "jobId",
+									"value": "<reportjob-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Suggested CPC",
+			"item": [
+				{
+					"name": "get suggested cpc for source id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{tonic_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.advertiser.tonic.com/v1/suggested-cpc?source_id=<source-id>",
+							"host": ["https://api.advertiser.tonic.com/v1"],
+							"path": [
+								"suggested-cpc"
+							],
+							"query": [
+								{
+									"key": "source_id",
+									"value": "<source-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ce220876-6354-4dad-a9a3-ef06c168fdd6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d72eaa1a-0b67-4af6-a7cd-d4b85eaad75e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
