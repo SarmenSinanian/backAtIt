@@ -96,11 +96,14 @@ sqliteConnection = sqlite3.connect('SQLite_Python.db')
 cursor = sqliteConnection.cursor()
 cursor.execute("SELECT id FROM new_employee ORDER BY id DESC LIMIT 1")
 finalEntryID = cursor.fetchone()
-print(finalEntryID)
+print(f'this is it {finalEntryID}')
 sqliteConnection.close()
 
 # Adding photos from selected photos on previous action
-for count, file in enumerate(filename):
+for count, file in enumerate(filename, 1):
+    # if finalEntryID == None:
+    #     finalEntryID = [0]
+    print(count)
     insertBLOB(count + finalEntryID[0], 'Ally', file)
 
 # Initial read from DB and write to DISK test
