@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Image Repository</title>
+    </head>
+
+
+    <body>
+        <a href="/">Main page</a> <br>
+        <a href="/reset">Reset DB (Dev Option)</a> <br>
+<!--        <button><a href='/addPhoto/'>AddPhoto</button>-->
+
+<!--        <form action="/addPhoto/" method="post" enctype="multipart/form-data">-->
+<!--            <label for="photo">AddPhoto</label>-->
+<!--            <input type="file" id="photo" name="photo" accept=".jpg, .jpeg, .png">-->
+<!--            <input type="submit" value="Submit">-->
+<!--        </form>-->
+        <form action="/addPhoto/" method="POST" enctype="multipart/form-data">
+            <label for="files">Select files:</label>
+                <input type="file" id="files" name="files" accept=".jpg, .jpeg, .png" multiple><br><br>
+            <input type="submit">
+        </form>
+
+        <br>
+<!--        <p>You have sold ${{earnings}} in products so far!</p> <br>-->
+
+        <table border = 1>
+            <thead>
+                <td>ImageID</td>
+                <td>Image</td>
+                <td><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAwBAMAAACh2TSJAAAALVBMVEUAAADtNTX////3n5/+9fX719f7zMz5tLTzfHzuQED//f31jY3ybGzxXV3wVFRaxp+rAAAAAXRSTlMAQObYZgAAALVJREFUOMut0rENAjEQRNHdC4kY0QBaAQUQX0QAFSAKIKQEKiAA6VqgIkriApuV1x7pQPz0aWwHljLMpZ0CRDBGoXmeghGYKFJsUo90giAImCgV5OJF+oOgKE48MlGgs2VLBIunWesw0a1ZHqF82c7GmmIfUSpgotOly29DFPFJFDEhkgIT/V5mZuvj6XofKrHU6vyI4u37IYi36aN4h5tL7PJyif1dvCgEpapzISbCTEj5R78BZq5A5Ldh2XYAAAAASUVORK5CYII"></td>
+<!--                <td><button><a href='/addPhoto/'>AddPhoto</button></td>-->
+<!--                <td>Stock</td>-->
+<!--                <td>Image</td>-->
+                <td></td>
+            </thead>
+            
+            {% for product in products %}
+                <tr>
+                <td>{{product["id"]}}</td>
+                <td>{{product["name"]}}</td>
+                <td>{{product["photo"]}}</td>
+<!--                <td>{{product["image"]}}</td>-->
+                <td><img src="data:;base64,{{ product['image'] }}"/></td>
+<!--                <td><img src='{{ product["image"] }}'/></td>-->
+                <td><img src='{{product["src"]}}' /></td>
+<!--                <td><button><a href='/addPhoto/'>AddPhoto</button></td>-->
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
